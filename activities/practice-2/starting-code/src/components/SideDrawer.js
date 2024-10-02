@@ -1,9 +1,10 @@
 import classes from './SideDrawer.module.css';
+import { createPortal } from 'react-dom';
 
-function SideDrawer() {
-  return (
+function SideDrawer(props) {
+  return createPortal(
     <>
-      <div className={classes.backdrop} />
+      <div onClick={props.backdropCLick} className={classes.backdrop} />
       <aside className={classes.drawer}>
         <nav>
           <ul>
@@ -20,7 +21,7 @@ function SideDrawer() {
         </nav>
       </aside>
     </>
-  );
+  , document.getElementById('portal'));
 }
 
 export default SideDrawer;
