@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 
 import Login from './Login/Login';
-import Signup from './Signup/Signup';
 import classes from './Authentication.module.css';
+const Signup = lazy(() => import('./Signup/Signup'));
+
 
 function Authentication() {
   const [mode, setMode] = useState('login');
@@ -15,7 +16,9 @@ function Authentication() {
   let switchBtnCaption = 'Create a new account';
 
   if (mode !== 'login') {
-    authElement = <Signup />;
+    authElement = <Suspense fallback={<p>Loading...</p>}>
+                    {<Signup />}
+                 </Suspense> ;
     switchBtnCaption = 'Login instead';
   }
 

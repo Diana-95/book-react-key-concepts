@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 
-import ResetPassword from './ResetPassword';
+const ResetPassword = lazy ( () => import('./ResetPassword'));
 
 function Login() {
   const [isResetting, setIsResetting] = useState();
@@ -33,7 +33,9 @@ function Login() {
       <button className="alt-btn" onClick={startResetPasswordHandler}>
         Reset password
       </button>
+      <Suspense  fallback={<p>Loading...</p>}>
       {isResetting && <ResetPassword onFinish={finishResetPasswordHandler} />}
+      </Suspense>
     </>
   );
 }
