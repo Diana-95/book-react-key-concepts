@@ -1,9 +1,12 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+
 
 import Cart from '../Cart/Cart';
 import classes from './MainHeader.module.css';
+import CartContext, { CartDataContextProvider } from '../../data/cart_context';
 
-function MainHeader({ cartItems }) {
+function MainHeader() {
+  const cartContext = useContext(CartContext);
   const [modalIsOpen, setModalIsOpen] = useState();
 
   function openCartModalHandler() {
@@ -14,7 +17,7 @@ function MainHeader({ cartItems }) {
     setModalIsOpen(false);
   }
 
-  const numCartItems = cartItems.length;
+  const numCartItems = cartContext.cartItems.length;
 
   return (
     <>
@@ -22,7 +25,7 @@ function MainHeader({ cartItems }) {
         <h1>StateEvents Shop</h1>
         <button onClick={openCartModalHandler}>Cart ({numCartItems})</button>
       </header>
-      {modalIsOpen && <Cart onClose={closeCartModalHandler} items={cartItems} />}
+      {modalIsOpen && <Cart onClose={closeCartModalHandler} />}
     </>
   );
 }

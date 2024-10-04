@@ -1,9 +1,13 @@
 import ReactDOM from 'react-dom';
 
 import classes from './Cart.module.css';
+import { useContext } from 'react';
+import CartContext from '../../data/cart_context';
 
-function Cart({ onClose, items }) {
-  const total = items.reduce((prevVal, item) => prevVal + item.price, 0)
+function Cart({ onClose }) {
+  const cartContext = useContext(CartContext);
+  const total = cartContext.cartItems.reduce((prevVal, item) => prevVal + item.price, 0);
+  const items = cartContext.cartItems;
 
   return ReactDOM.createPortal(
     <>
