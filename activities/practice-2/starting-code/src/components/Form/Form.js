@@ -1,24 +1,46 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import classes from './Form.module.css';
 
 function Form() {
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [emailIsValid, setEmailIsValid] = useState(false);
-  const [enteredPassword, setEnteredPassword] = useState('');
-  const [passwordIsValid, setPasswordIsValid] = useState(false);
 
-  const formIsValid = emailIsValid && passwordIsValid;
+  const initialState = {
+    enteredEmail: '',
+    emailIsValid: false,
+    enteredPassword: '',
+    passwordIsValid: false
+  }
+
+  const EMAIL_CHANGED = 'EMAIL_CHANGED';
+  const PASSWORD_CHANGED = 'PSWRD_CHANGED';
+  function formStateReducer (state, action) {
+    if (action.type === EMAIL_CHANGED) {
+      return {
+        ...state,
+        enteredEmail: action.value,
+        emailIsValid: action.value.includes('@')
+      }
+    }
+    if (action.type === PASSWORD_CHANGED) {
+      return {
+        ...state,
+        enteredPassword: action.value,
+        passwordIsValid: action.value.trim().length > 7
+      }
+    }
+  }
+
+  const [state, dispatch] = useReducer(formStateReducer, initialState);
+
+  const formIsValid = state.emailIsValid && state.passwordIsValid;
 
   function changeEmailHandler(event) {
     const value = event.target.value;
-    setEnteredEmail(value);
-    setEmailIsValid(value.includes('@'));
+    dispatch({type: EMAIL_CHANGED, value: value});
   }
 
   function changePasswordHandler(event) {
     const value = event.target.value;
-    setEnteredPassword(value);
-    setPasswordIsValid(value.trim().length > 7);
+    dispatch({type: PASSWORD_CHANGED, value: value});
   }
 
   function submitFormHandler(event) {
@@ -30,7 +52,7 @@ function Form() {
     }
 
     console.log('Good job!');
-    console.log(enteredEmail, enteredPassword);
+    console.log(state.enteredEmail, state.enteredPassword);
   }
 
   return (
